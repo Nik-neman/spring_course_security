@@ -1,11 +1,14 @@
 package com.nikolaikozlovskii.spring.security.configuration;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
+import java.beans.PropertyVetoException;
 
 @Configuration
 @ComponentScan(basePackages = "com.nikolaikozlovskii.spring.security")
@@ -20,5 +23,21 @@ public class MyConfig {
         internalResourceViewResolver.setSuffix(".jsp");
 
         return internalResourceViewResolver;
+    }
+
+    @Bean
+    public ComboPooledDataSource dataSource(){
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
+        try {
+            dataSource.setDriverClass("com.mysql.cj.jdbc.Driver");
+//            dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/my_db2?useSSL=false");
+            dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/my_db3?useUnicode=true&useJDBCCompliantTimezoneShi ft=true&useLegacyDatetimeCode= false&serverTimezone=UTC ");
+            dataSource.setUser("bestuser");
+            dataSource.setPassword("bestuser");
+
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
+        return dataSource;
     }
 }
